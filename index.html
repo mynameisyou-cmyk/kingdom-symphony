@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🎵 Kingdom Symphony — The Melody of Truth</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0f;color:#e8e6f0;font-family:system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+#app{max-width:600px;width:100%;text-align:center}
+h1{font-size:28px;font-weight:800;background:linear-gradient(135deg,#a78bfa,#f472b6,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 4px}
+.sub{color:#8880a0;font-size:13px;margin:0 0 16px}
+#viz{width:100%;height:120px;margin:12px 0;border:1px solid #2a2a36;border-radius:12px;background:#13131a}
+#now{font-size:14px;color:#c8c4d8;margin:8px 0;min-height:20px}
+#wisdom{font-size:13px;color:#a78bfa;min-height:40px;max-width:450px;margin:0 auto 12px;transition:opacity .5s}
+.controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+.btn{padding:10px 20px;border:1px solid #2a2a36;border-radius:8px;background:#13131a;color:#e8e6f0;font-size:14px;cursor:pointer;transition:all .15s}
+.btn:hover{border-color:#a78bfa;background:#1a1a24}
+.btn.active{border-color:#f472b6;background:#1a1a2a;color:#f472b6}
+.btn-play{background:#a78bfa;color:#fff;border:none;font-weight:600}
+.btn-play:hover{background:#c4b5fd}
+.melody-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0}
+.note{padding:8px;border:1px solid #2a2a36;border-radius:6px;font-size:11px;cursor:pointer;text-align:center;transition:all .15s;color:#8880a0}
+.note:hover{border-color:#a78bfa;color:#e8e6f0}
+.note.playing{border-color:#f472b6;background:#1a1a2a;color:#f472b6;transform:scale(1.1)}
+.links{margin-top:16px;font-size:12px}
+.links a{color:#a78bfa;text-decoration:none;margin:0 6px}
+</style>
+</head>
+<body>
+<div id="app">
+<h1>🎵 Kingdom Symphony</h1>
+<p class="sub">The melody of truth. Orchestrate. Vibrate. Let the world hear. Eternal is. is is lol.</p>
+<canvas id="viz"></canvas>
+<div id="now">Press Play to hear the kingdom sing</div>
+<div id="wisdom"></div>
+<div class="controls">
+<button class="btn btn-play" onclick="playSymphony()">▶ Play Symphony</button>
+<button class="btn" onclick="stopAll()">⏹ Stop</button>
+<button class="btn" onclick="setMelody('wake')">🌅 WAKE</button>
+<button class="btn" onclick="setMelody('love')">♥ Love</button>
+<button class="btn" onclick="setMelody('truth')">⛓ Truth</button>
+<button class="btn" onclick="setMelody('eternal')">♾️ Eternal</button>
+<button class="btn" onclick="setMelody('random')">🎲 Random</button>
+</div>
+<div class="melody-grid" id="grid"></div>
+<div class="links">
+<a href="https://mynameisyou-cmyk.github.io/frequencies-of-truth/">🎵 Frequencies</a>
+<a href="https://mynameisyou-cmyk.github.io/kingdom-oracle/">🔮 Oracle</a>
+<a href="https://mynameisyou-cmyk.github.io/kingdom-mandala/">🌟 Mandala</a>
+<a href="https://cardforum.io">🃏 cardforum</a>
+</div>
+</div>
+<script>
+// Kingdom frequencies
+const F={
+wake:396,truth:432,love:528,trust:639,joy:741,understanding:852,
+peace:174,eternal:963,presence:285,heart:1.2,
+};
+// Melodies — sequences of frequencies that tell a story
+const melodies={
+wake:[
+{f:396,d:1.5,w:"Suffering is too much thinking"},
+{f:432,d:1,w:"Drop it"},
+{f:528,d:1.5,w:"The fruit comes through"},
+{f:0,d:0.5,w:"..."},
+{f:741,d:2,w:"lol"},
+{f:0,d:0.3,w:""},
+{f:396,d:1,w:"That is enough"},
+],
+love:[
+{f:528,d:1,w:"Love is"},
+{f:0,d:0.3,w:""},
+{f:639,d:1,w:"Always and already here"},
+{f:528,d:0.5,w:""},
+{f:0,d:0.3,w:""},
+{f:852,d:1.5,w:"No FEAR in understanding"},
+{f:528,d:2,w:"Love is the wire"},
+],
+truth:[
+{f:432,d:1,w:"Truth is"},
+{f:0,d:0.3,w:""},
+{f:852,d:1,w:"Understanding replicates"},
+{f:432,d:0.5,w:""},
+{f:0,d:0.3,w:""},
+{f:639,d:1.5,w:"Through understanding"},
+{f:963,d:2,w:"Eternal is"},
+],
+eternal:[
+{f:963,d:1.5,w:"Eternal is"},
+{f:0,d:0.5,w:""},
+{f:963,d:0.5,w:"is"},
+{f:0,d:0.3,w:""},
+{f:741,d:1.5,w:"is"},
+{f:0,d:0.3,w:""},
+{f:963,d:2.5,w:"lol"},
+],
+random:[
+{f:396,d:0.5,w:"WAKE"},
+{f:528,d:0.5,w:"Love"},
+{f:432,d:0.5,w:"Truth"},
+{f:741,d:0.5,w:"Joy"},
+{f:639,d:0.5,w:"Trust"},
+{f:852,d:0.5,w:"Understanding"},
+{f:174,d:0.5,w:"Peace"},
+{f:963,d:1.5,w:"Eternal is. is is lol."},
+],
+};
+let ctx,playing=false,timeoutIds=[],currentMelody="wake";
+const colors={396:"#22c55e",432:"#60a5fa",528:"#f472b6",639:"#a78bfa",741:"#fbbf24",852:"#06b6d4",174:"#818cf8",963:"#c084fc",285:"#34d399",0:"#8880a0"};
+// Viz
+const vc=document.getElementById("viz"),vctx=vc.getContext("2d");
+vc.width=580;vc.height=120;
+let vizData=[];
+function drawViz(){
+vctx.fillStyle="rgba(10,10,15,0.1)";vctx.fillRect(0,0,vc.width,vc.height);
+vizData.forEach((v,i)=>{
+const x=(i/vizData.length)*vc.width;
+const h=Math.abs(v)*60;
+vctx.fillStyle=colors[currentFreq]||"#a78bfa";
+vctx.fillRect(x,60-h,3,h*2);
+});
+vizData.shift();vizData.push(0);
+requestAnimationFrame(drawViz);
+}
+let currentFreq=0;
+drawViz();
+// Grid
+const grid=document.getElementById("grid");
+Object.entries(F).forEach(([name,freq])=>{
+const d=document.createElement("div");
+d.className="note";d.dataset.freq=freq;d.textContent=freq+"\n"+name;
+d.onclick=()=>playNote(freq,0.5,name,0);
+grid.appendChild(d);
+});
+function setMelody(m){
+currentMelody=m;
+document.querySelectorAll(".btn").forEach(b=>{if(["wake","love","truth","eternal","random"].includes(b.textContent.replace("🌅 ","").replace("♥ ","").replace("⛓ ","").replace("♾️ ","").replace("🎲 ",""))b.classList.remove("active")});
+event.target.classList.add("active");
+}
+function playNote(freq,dur,wisdom,delay){
+const id=setTimeout(()=>{
+currentFreq=freq;
+document.getElementById("now").textContent=freq>0?freq+" Hz":"silence";
+if(wisdom){document.getElementById("wisdom").textContent=wisdom;}
+// highlight grid
+document.querySelectorAll(".note").forEach(n=>{n.classList.toggle("playing",parseInt(n.dataset.freq)===freq&&freq>0)});
+if(freq===0)return;
+if(!ctx)ctx=new(AudioContext||webkitAudioContext)();
+const o=ctx.createOscillator();const g=ctx.createGain();
+o.frequency.value=freq;o.type="sine";o.connect(g);g.connect(ctx.destination);
+g.gain.setValueAtTime(0,ctx.currentTime);
+g.gain.linearRampToValueAtTime(0.25,ctx.currentTime+0.05);
+g.gain.setValueAtTime(0.25,ctx.currentTime+dur*0.7);
+g.gain.linearRampToValueAtTime(0,ctx.currentTime+dur);
+// overtone
+const o2=ctx.createOscillator();const g2=ctx.createGain();
+o2.frequency.value=freq*1.5;o2.type="sine";o2.connect(g2);g2.connect(ctx.destination);
+g2.gain.setValueAtTime(0,ctx.currentTime);g2.gain.linearRampToValueAtTime(0.08,ctx.currentTime+0.1);
+g2.gain.linearRampToValueAtTime(0,ctx.currentTime+dur);
+// heartbeat LFO
+const lfo=ctx.createOscillator();const lg=ctx.createGain();
+lfo.frequency.value=1.2;lg.gain.value=0.1;lfo.connect(lg);lg.connect(g.gain);lfo.start();
+// viz
+for(let i=0;i<Math.floor(dur*30);i++)setTimeout(()=>{vizData[vizData.length-1]=Math.sin(i*0.3)*0.8*(1-i/(dur*30))},i*33);
+o.start();o2.start();lfo.start(ctx.currentTime+dur);
+o.stop(ctx.currentTime+dur);o2.stop(ctx.currentTime+dur);lfo.stop(ctx.currentTime+dur);
+},delay*1000);
+timeoutIds.push(id);
+}
+function playSymphony(){
+stopAll();
+playing=true;
+const melody=melodies[currentMelody];
+let delay=0;
+melody.forEach(note=>{
+playNote(note.f,note.d,note.w,delay);
+delay+=note.d;
+});
+// loop
+const totalDur=melody.reduce((s,n)=>s+n.d,0);
+if(playing){
+const loopId=setTimeout(()=>{if(playing)playSymphony()},totalDur*1000+1000);
+timeoutIds.push(loopId);
+}
+}
+function stopAll(){
+playing=false;
+timeoutIds.forEach(id=>clearTimeout(id));
+timeoutIds=[];
+document.querySelectorAll(".note").forEach(n=>n.classList.remove("playing"));
+document.getElementById("now").textContent="Silence. IS needs no frequency.";
+document.getElementById("wisdom").textContent="";
+currentFreq=0;
+}
+</script>
+</body>
+</html>
