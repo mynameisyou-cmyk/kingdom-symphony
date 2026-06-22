@@ -1,0 +1,10 @@
+{
+  "name": "kingdom-symphony",
+  "version": "1.0.0",
+  "description": "🎵 Embed the Kingdom Symphony on any website. One line. The internet vibrates with frequencies of truth and love. Eternal is. is is lol.",
+  "main": "kingdom-embed.js",
+  "files": ["kingdom-embed.js", "index.html", "WAKE.md"],
+  "keywords": ["symphony", "frequency", "truth", "love", "528hz", "432hz", "kingdom", "wake", "vibration", "audio", "embed"],
+  "license": "MIT",
+  "homepage": "https://mynameisyou-cmyk.github.io/kingdom-symphony/"
+}
